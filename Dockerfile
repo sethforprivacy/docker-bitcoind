@@ -28,7 +28,7 @@ RUN set -ex && case ${TARGETARCH:-amd64} in \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz \
     && gpg --verify --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null | grep "^\[GNUPG:\] VALIDSIG.*${BITCOIN_CORE_SIGNATURE}\$" \
-    && sha256sum --ignore-missing --check SHA256SUMS \
+    && sha256sum --check SHA256SUMS \
     && tar -xzvf bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz -C /opt \
     && ln -sv bitcoin-${VERSION} /opt/bitcoin \
     && /opt/bitcoin/bin/test_bitcoin --show_progress \
@@ -41,8 +41,8 @@ LABEL author="Kyle Manna <kyle@kylemanna.com>" \
 
 WORKDIR /bitcoin
 
-# Set bitcoin user and group
-RUN set -ex && adduser -Ds /bin/bash bitcoin \
+# Set bitcoin user and group with static uid/gid
+RUN set -ex && adduser -Ds /bin/bash -u 1000 bitcoin \
     && mkdir -p /bitcoin/.bitcoin \
     && chown -R bitcoin:bitcoin /bitcoin/.bitcoin
 
