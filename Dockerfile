@@ -19,8 +19,8 @@ ARG BITCOIN_CORE_SIGNATURE=71A3B16735405025D447E8F274810B012346C9A6
 # 3. Verifying pkg signature from main website should inspire confidence and reduce chance of surprises.
 # Instead fetch, verify, and extract to Docker image
 RUN set -ex && case ${TARGETARCH:-amd64} in \
-    "arm64") ARCH="aarch64";; \
-    "amd64") ARCH="x86_64";; \
+    "arm64") ARCH="aarch64"; SHA256SUM="06f4c78271a77752ba5990d60d81b1751507f77efda1e5981b4e92fd4d9969fb";; \
+    "amd64") ARCH="x86_64"; SHA256SUM="2cca490c1f2842884a3c5b0606f179f9f937177da4eadd628e3f7fd7e25d26d0";; \
     *) echo "Dockerfile does not support this platform"; exit 1 ;; \
     esac \
     && gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys ${BITCOIN_CORE_SIGNATURE} \
@@ -28,7 +28,7 @@ RUN set -ex && case ${TARGETARCH:-amd64} in \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz \
     && gpg --verify --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null | grep "^\[GNUPG:\] VALIDSIG.*${BITCOIN_CORE_SIGNATURE}\$" \
-    && sha256sum -c SHA256SUMS \
+    && echo "${SHA256SUM}  bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz" | sha256sum -c - \
     && tar -xzvf bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz -C /opt \
     && ln -sv bitcoin-${VERSION} /opt/bitcoin \
     && /opt/bitcoin/bin/test_bitcoin --show_progress \
