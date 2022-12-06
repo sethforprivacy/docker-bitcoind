@@ -3,7 +3,7 @@ name: "Update image when Dockerfile is changed"
 on:
   push:
     branches:
-    - main
+    - master
     paths:
     - 'Dockerfile'
   workflow_dispatch:
