@@ -1,9 +1,6 @@
 Bitcoind for Docker
 ===================
 
-[![Docker Stars](https://img.shields.io/docker/stars/sethsimmons/bitcoind.svg)](https://hub.docker.com/r/sethsimmons/bitcoind/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/sethsimmons/bitcoind.svg)](https://hub.docker.com/r/sethsimmons/bitcoind/)
-
 Docker image that runs the Bitcoin bitcoind node in a container for easy deployment.
 
 ***Note: Credit for this image goes almost entirely to https://github.com/kylemanna/docker-bitcoind, I have added some optimizations and wanted a way to keep more easily up to date.***
@@ -28,13 +25,13 @@ Quick Start
         docker run -v bitcoind-data:/bitcoin/.bitcoin --name=bitcoind-node -d \
             -p 8333:8333 \
             -p 127.0.0.1:8332:8332 \
-            sethsimmons/bitcoind
+            ghcr.io/sethforprivacy/bitcoind:latest
 
 2. Verify that the container is running and bitcoind node is downloading the blockchain
 
         $ docker ps
         CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS              PORTS                                              NAMES
-        d0e1076b2dca        sethsimmons/bitcoind:latest     "btc_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   bitcoind-node
+        d0e1076b2dca        ghcr.io/sethforprivacy/bitcoind:latest     "btc_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   bitcoind-node
 
 3. You can then access the daemon's output thanks to the [docker logs command]( https://docs.docker.com/reference/commandline/cli/#logs)
 
