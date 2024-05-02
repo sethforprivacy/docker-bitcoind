@@ -27,7 +27,7 @@ RUN case ${TARGETARCH:-amd64} in \
     *) echo "Dockerfile does not support this platform"; exit 1 ;; \
     esac \
     && gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys ${BITCOIN_CORE_SIGNATURE} \
-    && wget -q --show-progress --progress=bar:force:noscroll https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS.asc \
+    && wget -q --show-progress --progress=dot:mega https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS.asc \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz \
     && gpg --verify --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null | grep "^\[GNUPG:\] VALIDSIG.*${BITCOIN_CORE_SIGNATURE}\$" \
