@@ -113,7 +113,7 @@ jobs:
           tags: |
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=${{ env.BITCOIN_VERSION }}
+            type=semver,pattern={{version}},value=${{ env.BITCOIN_VERSION }}
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
