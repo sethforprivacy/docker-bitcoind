@@ -39,9 +39,6 @@ jobs:
           images: |
             ${{ env.GHCR_REPO }}
       -
-        name: Get Bitcoin version
-        run: echo BITCOIN_VERSION="$(awk -F '=' '/VERSION=/ {print $2}' Dockerfile)" >> $GITHUB_ENV
-      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.9.0
       -
@@ -54,10 +51,6 @@ jobs:
       -
         name: Checkout repository
         uses: actions/checkout@v4
-      -
-        name: Get short SHA
-        id: get_short_sha
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       -
         name: Build and and push by digest
         uses: docker/build-push-action@v6.13.0
@@ -104,6 +97,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.9.0
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get Bitcoin version
+        run: echo BITCOIN_VERSION="$(awk -F '=' '/VERSION=/ {print $2}' Dockerfile)" >> $GITHUB_ENV
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -113,7 +112,7 @@ jobs:
           tags: |
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
-            type=semver,pattern={{version}},value=${{ env.BITCOIN_VERSION }}
+            type=raw,value=${{ env.BITCOIN_VERSION }}
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
