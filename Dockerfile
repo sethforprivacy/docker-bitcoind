@@ -1,5 +1,5 @@
 # Use the latest available Ubuntu image as build stage
-FROM ubuntu:latest as builder
+FROM ubuntu:latest AS builder
 
 # Upgrade all packages and install dependencies
 RUN apt-get update \
@@ -38,7 +38,7 @@ RUN case ${TARGETARCH:-amd64} in \
     && rm -v /opt/bitcoin/bin/test_bitcoin /opt/bitcoin/bin/bitcoin-qt
 
 # Use latest Ubuntu image as base for main image
-FROM ubuntu:latest
+FROM ubuntu:latest AS final
 LABEL author="Kyle Manna <kyle@kylemanna.com>" \
       maintainer="Seth For Privacy <seth@sethforprivacy.com>"
 
@@ -67,7 +67,7 @@ COPY ./bin ./docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Set HOME
-ENV HOME /bitcoin
+ENV HOME=/bitcoin
 
 # Expose default p2p and RPC ports
 EXPOSE 8332 8333
