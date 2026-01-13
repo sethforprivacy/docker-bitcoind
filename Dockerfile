@@ -14,7 +14,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 ARG TARGETARCH
 ARG ARCH
 ARG VERSION=30.2
-ARG BITCOIN_CORE_SIGNATURE=71A3B16735405025D447E8F274810B012346C9A6
+ARG BITCOIN_CORE_SIGNATURE=152812300785C96444D3334D17565732E08E5E41
 
 # Don't use base image's bitcoin package for a few reasons:
 # 1. Would need to use ppa/latest repo for the latest release.
