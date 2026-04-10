@@ -14,7 +14,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 ARG TARGETARCH
 ARG ARCH
 ARG VERSION=30.2
-ARG BITCOIN_CORE_SIGNATURE=152812300785C96444D3334D17565732E08E5E41
+ARG BITCOIN_CORE_SIGNATURES="71A3B16735405025D447E8F274810B012346C9A6 \
+    152812300785C96444D3334D17565732E08E5E41 \
+    E777299FC265DD04793070EB944D35F9AC3DB76A \
+    "
 
 # Don't use base image's bitcoin package for a few reasons:
 # 1. Would need to use ppa/latest repo for the latest release.
@@ -26,11 +29,12 @@ RUN case ${TARGETARCH:-amd64} in \
     "amd64") ARCH="x86_64";; \
     *) echo "Dockerfile does not support this platform"; exit 1 ;; \
     esac \
-    && gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys ${BITCOIN_CORE_SIGNATURE} \
+    && gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys ${BITCOIN_CORE_SIGNATURES} \
     && wget -q --show-progress --progress=dot:giga https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS.asc \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS \
             https://bitcoincore.org/bin/bitcoin-core-${VERSION}/bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz \
-    && gpg --verify --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null | grep "^\[GNUPG:\] VALIDSIG.*${BITCOIN_CORE_SIGNATURE}\$" \
+    && gpg --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null \
+        | grep -Eq "^\[GNUPG:\] VALIDSIG.*($(printf '%s\n' ${BITCOIN_CORE_SIGNATURES} | paste -sd'|' -))$" \
     && sha256sum --ignore-missing --check SHA256SUMS \
     && tar -xzvf bitcoin-${VERSION}-${ARCH}-linux-gnu.tar.gz -C /opt \
     && ln -sv bitcoin-${VERSION} /opt/bitcoin \
