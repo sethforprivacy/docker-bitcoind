@@ -13,6 +13,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 # Set variables necessary for download and verification of bitcoind
 ARG TARGETARCH
 ARG ARCH
+# renovate: datasource=github-releases depName=bitcoin/bitcoin extractVersion=^v(?<version>.+)$
 ARG VERSION=31.0
 ARG BITCOIN_CORE_SIGNATURES="71A3B16735405025D447E8F274810B012346C9A6 \
     152812300785C96444D3334D17565732E08E5E41 \

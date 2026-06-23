@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor",
+    "mergeConfidence:all-badges",
+    ":disableRateLimiting",
+    ":semanticCommits"
+  ],
+  "rebaseWhen": "conflicted",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)Dockerfile$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\sARG VERSION=(?<currentValue>.*)\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
+      "extractVersionTemplate": "{{#if extractVersion}}{{extractVersion}}{{else}}^v(?<version>.+)${{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Bitcoin Core upstream tags are prefixed with 'v' but the Dockerfile ARG omits it; strip the prefix so Renovate proposes e.g. 31.0 (no 'v').",
+      "matchDatasources": [
+        "github-releases"
+      ],
+      "matchPackageNames": [
+        "bitcoin/bitcoin"
+      ],
+      "extractVersion": "^v(?<version>.+)$"
+    }
+  ]
+}
