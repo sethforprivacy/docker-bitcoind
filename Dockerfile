@@ -1,5 +1,5 @@
 # Use a pinned Ubuntu LTS image as build stage (kept current by Renovate)
-FROM ubuntu:24.04 AS builder
+FROM ubuntu:26.04 AS builder
 
 # Upgrade all packages and install dependencies
 RUN apt-get update \
@@ -43,7 +43,7 @@ RUN case ${TARGETARCH:-amd64} in \
     && rm -v /opt/bitcoin/libexec/test_bitcoin /opt/bitcoin/bin/bitcoin-qt
 
 # Use a pinned Ubuntu LTS image as base for main image (kept current by Renovate)
-FROM ubuntu:24.04 AS final
+FROM ubuntu:26.04 AS final
 LABEL author="Kyle Manna <kyle@kylemanna.com>" \
       maintainer="Seth For Privacy <seth@sethforprivacy.com>"
 
