@@ -14,7 +14,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 ARG TARGETARCH
 ARG ARCH
 # renovate: datasource=github-releases depName=bitcoin/bitcoin versioning=loose extractVersion=^v(?<version>.+)$
-ARG VERSION=31.0
+ARG VERSION=31.1
 ARG BITCOIN_CORE_SIGNATURES="71A3B16735405025D447E8F274810B012346C9A6 \
     152812300785C96444D3334D17565732E08E5E41 \
     E777299FC265DD04793070EB944D35F9AC3DB76A \
