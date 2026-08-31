@@ -20,6 +20,9 @@ EOF
 
 fi
 
-cat $HOME/.bitcoin/bitcoin.conf
+# Keep the RPC credentials out of stdout/logs; only report the config path
+chmod 600 "$HOME/.bitcoin/bitcoin.conf" 2>/dev/null || true
+
+echo "Initialized; bitcoin.conf written to $HOME/.bitcoin/bitcoin.conf"
 
 echo "Initialization completed successfully"

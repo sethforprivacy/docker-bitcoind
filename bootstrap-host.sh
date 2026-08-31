@@ -53,5 +53,5 @@ curl https://raw.githubusercontent.com/kylemanna/docker-bitcoind/master/init/ups
 start docker-bitcoind
 
 set +ex
-echo "Resulting bitcoin.conf:"
-docker run -v bitcoind-data:/bitcoin --rm $BTC_IMAGE cat /bitcoin/.bitcoin/bitcoin.conf
+echo "Resulting bitcoin.conf location:"
+docker run -v bitcoind-data:/bitcoin --rm $BTC_IMAGE sh -c 'echo "$HOME/.bitcoin/bitcoin.conf"'

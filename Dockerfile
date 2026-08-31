@@ -1,5 +1,5 @@
 # Use a pinned Ubuntu LTS image as build stage (kept current by Renovate)
-FROM ubuntu:26.04 AS builder
+FROM ubuntu:26.04@sha256:2260313b31c8c011cd2eebe728008efac1b3982be73eb71348ea2648d2c0e09b AS builder
 
 # Upgrade all packages and install dependencies
 RUN apt-get update \
@@ -43,7 +43,7 @@ RUN case ${TARGETARCH:-amd64} in \
     && rm -v /opt/bitcoin/libexec/test_bitcoin /opt/bitcoin/bin/bitcoin-qt
 
 # Use a pinned Ubuntu LTS image as base for main image (kept current by Renovate)
-FROM ubuntu:26.04 AS final
+FROM ubuntu:26.04@sha256:2260313b31c8c011cd2eebe728008efac1b3982be73eb71348ea2648d2c0e09b AS final
 LABEL author="Kyle Manna <kyle@kylemanna.com>" \
       maintainer="Seth For Privacy <seth@sethforprivacy.com>"
 
@@ -79,5 +79,8 @@ EXPOSE 8332 8333
 
 # Expose default bitcoind storage location
 VOLUME ["/bitcoin/.bitcoin"]
+# Add HEALTHCHECK probing the local RPC (credentials come from bitcoin.conf,
+# which bitcoin-cli reads from $HOME/.bitcoin by default)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 CMD bitcoin-cli -rpcconnect=127.0.0.1 -rpcport=8332 getblockchaininfo > /dev/null 2>&1 || exit 1
 
 CMD ["btc_oneshot"]
