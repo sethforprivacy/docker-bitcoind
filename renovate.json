@@ -33,6 +33,23 @@
         "bitcoin/bitcoin"
       ],
       "extractVersion": "^v(?<version>.+)$"
+    },
+    {
+      "description": "Batch and auto-merge low-risk GitHub Actions and Docker updates once checks pass",
+      "matchManagers": [
+        "github-actions",
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "digest",
+        "pinDigest",
+        "patch",
+        "minor",
+        "pin"
+      ],
+      "groupName": "low-risk dependency updates",
+      "automerge": true
     }
-  ]
+  ],
+  "automergeType": "pr"
 }
