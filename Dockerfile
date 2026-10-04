@@ -1,5 +1,5 @@
 # Use a pinned Ubuntu LTS image as build stage (kept current by Renovate)
-FROM ubuntu:26.04@sha256:3595d7fc4286a33fad0fd853a4063e654287a9c3787437d7937c94ca3f7a804e AS builder
+FROM ubuntu:26.04@sha256:f144425ff09be612d6d9ad965196e9cdc23dae1f42110a8a11a3e9a8198759f7 AS builder
 
 # Upgrade all packages and install dependencies
 RUN apt-get update \
@@ -43,7 +43,7 @@ RUN case ${TARGETARCH:-amd64} in \
     && rm -v /opt/bitcoin/libexec/test_bitcoin /opt/bitcoin/bin/bitcoin-qt
 
 # Use a pinned Ubuntu LTS image as base for main image (kept current by Renovate)
-FROM ubuntu:26.04@sha256:3595d7fc4286a33fad0fd853a4063e654287a9c3787437d7937c94ca3f7a804e AS final
+FROM ubuntu:26.04@sha256:f144425ff09be612d6d9ad965196e9cdc23dae1f42110a8a11a3e9a8198759f7 AS final
 LABEL author="Kyle Manna <kyle@kylemanna.com>" \
       maintainer="Seth For Privacy <seth@sethforprivacy.com>"
 
