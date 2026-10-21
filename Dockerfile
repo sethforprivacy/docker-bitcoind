@@ -62,8 +62,11 @@ COPY --chown=bitcoin:bitcoin --from=builder /opt/bitcoin/bin/ /usr/local/bin/
 # Upgrade all packages and install dependencies
 RUN apt-get update \
     && apt-get upgrade -y
+# The rockcraft-built ubuntu:26.04 base ships Canonical's pebble service
+# manager outside of dpkg, so apt can never patch it; nothing here uses it,
+# so drop it rather than carry its Go stdlib CVEs past the Trivy gate
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends gosu \
-    && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/bin/pebble /var/lib/pebble
 
 # Copy scripts to Docker image
 COPY ./bin ./docker-entrypoint.sh /usr/local/bin/
